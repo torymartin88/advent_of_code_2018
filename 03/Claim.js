@@ -13,6 +13,8 @@ function Claim(claimString) {
     let splitDimensions = split[3].split('x')
     this.w = parseInt(splitDimensions[0])
     this.h = parseInt(splitDimensions[1])
+
+    this.dirty = false
 }
 
 Claim.prototype.getArea = function() {

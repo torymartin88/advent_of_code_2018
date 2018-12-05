@@ -1,14 +1,11 @@
 function Fabric(x, y) {
     this.matrix = []
 
-    // blank unused cell wil containt this
-    this.defaultValue = 0
-
     for (let h = 0; h <= y; h++) {
         let row = []
 
         for (let w = 0; w <= x; w++) {
-            row.push(this.defaultValue)
+            row.push([])
         }
 
         this.matrix.push(row)
@@ -29,24 +26,53 @@ function Fabric(x, y) {
  * 
  */
 Fabric.prototype.addClaim = function(claim) {
+    let dirtyIDs = []
+
     for (let x = claim.x; x < claim.x + claim.w; x++) {
         for (let y = claim.y; y < claim.y + claim.h; y++) {
             // add to matrix at position
-            if (this.matrix[y][x] != 0) {
-                this.matrix[y][x] = -1
-            } else {
-                this.matrix[y][x] = claim.id
+            this.matrix[y][x].push(claim.id)
+            
+            // if there was another claim already mark all as dirty
+            if (this.matrix[y][x].length > 1) {
+                dirtyIDs = this.matrix[y][x]
             }
         }
     }
+
+    // console.log(dirtyIDs)
+    return dirtyIDs
 }
 
+
+/**
+ * Summary.
+ * Calculate squares that where claims overlap
+ * 
+ */
 Fabric.prototype.calculateOverlap = function() {
     let overlap = 0
 
     for (row of this.matrix) {
         for (val of row) {
-            if (val === -1) {
+            if (val.length > 1) {
+                overlap++
+            }
+        }
+    }
+    return overlap
+}
+
+/**
+ * Summary.
+ * Find if any claims are unique in area
+ */
+Fabric.prototype.findUnique = function() {
+    let overlap = 0
+
+    for (row of this.matrix) {
+        for (val of row) {
+            if (val.length > 1) {
                 overlap++
             }
         }

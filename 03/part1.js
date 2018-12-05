@@ -1,11 +1,15 @@
+const fs = require('fs')
 const Claim = require('./Claim.js')
 const Fabric = require('./Fabric.js')
 
-let newClaims = [
-    '#1 @ 1,3: 4x4',
-    '#2 @ 3,1: 4x4',
-    '#3 @ 5,5: 2x2'
-]
+fs.readFile('./input.txt', function (err, data) {
+    if (err) {
+        throw err; 
+    }
+
+    let inputDataStr = data.toString().split('\n')
+    console.log(main(inputDataStr))
+});
 
 function createClaims(newClaimsAsStrings) {
     let claims = []
@@ -44,8 +48,5 @@ function main(initialClaims) {
     }
 
     const overlap = fabric.calculateOverlap()
-    console.log(overlap)
     return overlap
 }
-
-main(newClaims)
