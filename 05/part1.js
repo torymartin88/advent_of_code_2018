@@ -20,7 +20,10 @@ function main(input) {
 
         if (has_reaction) {
             reaction_array.splice(index, 2)
-            index = 0
+            index = index - 1
+            if (index < 0) {
+                index = 0
+            }
             continue
         } else {
             index++
@@ -36,7 +39,7 @@ function main(input) {
     }
 
 
-    return reaction_array.join('')
+    return reaction_array.join('').length
 }
 
 function checkReaction(x, y) {
